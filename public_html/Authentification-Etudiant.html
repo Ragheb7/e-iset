@@ -1,0 +1,89 @@
+<html>
+    <head>
+        <title>Creer Un Compte</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" type="text/css" href="css/main.css" />
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+
+
+        <script src="js/jquery-1.12.3.min.js" type="text/javascript" ></script>
+        <script src="js/bootstrap.min.js" type="text/javascript"></script>
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css"/>
+
+        <!-- WebSQl -->
+        <script src="js/db-create.js" type="text/javascript"></script>
+
+    </head>
+    <body>
+        <header>
+            <nav>
+                <div id="new-header">
+                    <script>
+                        $("#new-header").load("header.html");
+                    </script>
+                </div>
+            </nav>
+        </header>
+
+
+        <div>
+            <from>
+                <div>
+                    <center> <img src="img/userEtdlogo.jpg" /></center>
+                </div>
+                <div>
+                    <input type="text" id="ip1" class="form-control" placeholder="Email" aria-describedby="sizing-addon1" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" title="email sous la forme user@exemple.com" />
+                    <button type="submit" id="myb" class="btn btn-primary"> Suivant </button>
+                </div>             
+            </from>
+        </div>
+
+        <footer>
+            <nav>
+                <div id="new-footer">
+                    <script>
+                        $("#new-footer").load("footer.html");
+                    </script>
+                </div>
+            </nav>  
+
+        </footer>
+
+
+
+
+
+        <script type="text/javascript">
+            var db = openDatabase('db_local_iset', '1.0', 'db_iset1', 100000);
+
+            $('#myb').click(function () {
+                var m2 = document.getElementById('ip1').value.toString();
+
+                db.transaction(function (tx) {
+                    tx.executeSql('SELECT cin,nom FROM utilisateur WHERE email = ?', [m2], function (tx, rs) {
+                        var n = rs.rows.length;
+
+                        if (n === 0) {
+                            alert("Email n'existe pas\n vérifée votre email");
+                        }
+                        else {
+
+                            var row = rs.rows.item(0);
+                            sessionStorage.userid = row['cin'];
+                            sessionStorage.userNom = row['nom'];
+                            location.href = "m2pEtudiant.html";
+                          
+                        }
+
+                    });
+                });
+
+            });
+
+        </script>
+    </body>
+</html>

@@ -14,26 +14,178 @@ and open the template in the editor.
         <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
 
 
-        <script src="js/jquery-1.12.2.min.js" type="text/javascript" ></script>
+        <script src="js/jquery-1.12.3.min.js" type="text/javascript" ></script>
         <script src="js/bootstrap.min.js" type="text/javascript"></script>
 
         <!-- Font Awesome -->
         <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css"/>
 
-
+        <!-- WebSQl -->
+        <script src="js/db-create.js" type="text/javascript"></script>
 
     </head>
-    <body style="position: absolute;  padding-top: 70px;" align="center">
+    <body style="position: absolute;  padding-top: 70px;" onload="init()">
 
-            <nav class="navbar navbar-default navbar-fixed-top">
-              <div class="container-fluid"> 
-                    <div class="container">
-                     
-                        <button type="button" class="btn btn-default navbar-btn">Connexion</button>   
-                    </div>
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container-fluid"> 
+                <div class="container">
+                 
+                        <button type="button" class="btn btn-default navbar-btn" onclick="retu()">Connexion</button>  
+                  
                 </div>
-            </nav>
-      
-        <div style="align: center;"><h1> <p align="center">Créer votre compte e-isetj</p></h1></div>
+            </div>
+        </nav>
+
+        <div><h1> <p align="center">Créer votre compte e-isetj</p></h1></div>
+
+        <div id="msgEuu"></div>
+
+        <div class="jumbotron" >
+            <div class="form-group">
+                <form action="" method=""> 
+                    <input type="text" class="form-control" placeholder="CIN" aria-describedby="sizing-addon1" id="cin" pattern="[0-9]" title="CIN est non valide">
+                    <input type="text" class="form-control" placeholder="Numero d'Inscription" aria-describedby="sizing-addon1" id="num" pattern="[0-9]" title="numero Inscription est non valide">
+                    <input type="text" class="form-control" placeholder="Nom" aria-describedby="sizing-addon1" id="nom" pattern="[A-Za-z]" title="le nom ne contient pas de chiffres vérifier votre nom">
+                    <input type="text" class="form-control" placeholder="Prénom" aria-describedby="sizing-addon1" id="pre" pattern="[A-Za-z]" title="le nom ne contient pas de chiffres vérifier votre nom">
+                    <input type="text" class="form-control" placeholder="Email" aria-describedby="sizing-addon1" id="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" title="email sous la forme user@exemple.com">
+                    <input type="password" class="form-control" placeholder="Mot de passe" aria-describedby="sizing-addon1" id="pw">
+                    <input type="password" class="form-control" placeholder="Vérifée le mot de passe" aria-describedby="sizing-addon1" id="pw2">
+                    <div>
+                        <label>Date de nassiance :</label>
+                        <input type="date" placeholder="Date de nassiance" id="dt">
+                    </div>
+
+                    <div class="form-group">
+                        <div class="radio">
+                            <label>Departement :</label>
+
+                            <label>
+                                <input type="radio" name="optionsRadios" id="optionsRadios1" value="1" checked>Ti
+                            </label>
+
+                            <label>
+                                <input type="radio" name="optionsRadios" id="optionsRadios2" value="2">AA
+                            </label>
+
+                            <label>
+                                <input type="radio" name="optionsRadios" id="optionsRadios3" value="3">GI
+                            </label>
+
+                            <label>
+                                <input type="radio" name="optionsRadios" id="optionsRadios4" value="3">GM
+                            </label>
+                        </div>        
+                    </div>
+
+                    <div>
+                        <label>Group :   </label> 
+
+                        <select class="form-control" id="idG">
+                            <option value="1">DSI</option>
+                            <option value="2">RSI</option>
+                            <option value="3">SEM</option>
+                        </select>
+
+                    </div>
+                    <div>
+                        <label> Niveau :  </label>
+                        <select class="form-control form-control-sm" id="idN">
+                            <option value="1 ére">1 ere</option>
+                            <option value="2 éme">2 eme</option>
+                            <option value="3 éme">3 eme</option>
+                        </select>
+
+                    </div>
+                    <div>
+                        <label>Photo de profil :</label>
+                        <label class="file">
+                            <input type="file" id="file">
+                            <span class="file-custom"></span>
+                        </label>
+
+                    </div>
+
+                    <button id="myButton" data-loading-text="Suivant..." class="btn btn-primary" autocomplete="off" onclick="ajouter()"> Ajouter </button>
+
+                </form>
+
+
+            </div>
+        </div>
+        <script type="text/javascript">
+
+            var db = openDatabase('db_local_iset', '1.0', 'db_iset1', 100000);
+            function ajouter() {
+                db.transaction(function (tx) {
+                    var cin = document.getElementById('cin').value.toString();
+                    var c = parseInt(cin);
+                    var numI = document.getElementById('num').value.toString();
+                    var nu = parseInt(numI);
+                    var email = document.getElementById('email').value.toString();
+                    var nom = document.getElementById('nom').value.toString();
+                    var prenom = document.getElementById('pre').value.toString();
+                    var mdp = document.getElementById('pw').value.toString();
+                    var mdp2 = document.getElementById('pw2').value.toString();
+                    var dn = document.getElementById('dt').value.toString();
+                    var dep = "1";
+                    dep = $('input[name=optionsRadios]:checked').val();
+                    var d = parseInt(dep);
+                    var se = document.getElementById('idG').value.toString();
+                    var nomGroupe;
+                    switch (se) {
+                        case 1 :
+                            nomGroupe = "DSI";
+                            break;
+                        case 2 :
+                            nomGroupe = "RSI";
+                            break;
+                        case 3 :
+                            nomGroupe = "SEM";
+                    }
+                    var niv = document.getElementById('idN').value.toString();
+
+                    var image = "C:\Users\bjrag\Desktop\Nouveau dossier (2)\e-isetj\public_html\img\28140.png";
+
+                    var i = document.getElementById('file').value.toString();
+                    if (i !== "") {
+                        image = i;
+                    }
+
+                    if ((nom === "") | (prenom === "") | (cin === "") | (numI === "") | (email === "") | (mdp === "") | (dn === "") | (mdp2 === "")) {
+                        var s = '<div class="alert alert-danger" role="alert">';
+                        s += ' <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>';
+                        s += ' <span class="sr-only">Error:</span>';
+                        s += 'Le choix est vide';
+                        s += ' </div>';
+                        document.getElementById('msgEuu').innerHTML = s;
+                    }
+                    else {
+
+                        if (mdp === mdp2) {
+
+                            tx.executeSql('insert into utilisateur (cin,email,nom,prenom,mdp,imageUrl,idDep) values (?,?,?,?,?,?,?)', [c, email, nom, prenom, mdp, image, d]);
+                            tx.executeSql('insert into etudiant(cinEtu,numIns,dateNaissance,niveau) values (?,?,?,?)', [c, nu, dn, niv]);
+                            alert('Ajouter l Etudiant  ' + nom + ' ' + prenom + ' avec sucees ! merci pour votre inscription');
+                            location.href = "Authentification Etudiant.html";
+                        }
+                        else {
+                            /*      var s = '<div class="alert alert-danger" role="alert">';
+                             s += ' <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>';
+                             s += ' <span class="sr-only">Error:</span>';
+                             s += 'verifée votre mot de passe ';
+                             s += ' </div>';
+                             document.getElementById('msgEuu').innerHTML  = s ;*/
+                            alert('verifée votre mot de passe');
+
+                        }
+
+                    }
+                }
+                );
+            }
+            function retu() {
+                location.href = "Authentification Etudiant.html";
+            }
+        </script>
     </body>
 </html>

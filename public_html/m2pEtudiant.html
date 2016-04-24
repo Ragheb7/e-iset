@@ -6,23 +6,95 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>Connectez-vous pour accéder à e-iset Jendouba </title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" type="text/css" href="css/main.css" />
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+
+
+        <script src="js/jquery-1.12.3.min.js" type="text/javascript" ></script>
+        <script src="js/bootstrap.min.js" type="text/javascript"></script>
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css"/>
+
+        <!-- WebSQl -->
+        <script src="js/db-create.js" type="text/javascript"></script>
     </head>
-    <body>
-      <div id="new-header">
-        <script>
-            $("#new-header").load("header.html");
-        </script>
-    </div>
-        <div>deflnf</div>
-        
-          <div id="new-footer">
+    <body onload="init()">
+        <div id="new-header">
+            <script>
+                $("#new-header").load("header.html");</script>
+        </div>
+
+
+
+        <div>
+
+            <form action="" method=""> 
+                <center>     <img src="img/userEtdlogo.jpg" id="imgEdu"> </center>
+                <div class="col-sm-10">
+
+                    <input type="password" class="form-control" placeholder="Enter Votre password" id="pw3">
+                </div> 
+
+
+                <div class="caption" style="align :'center' ">
+
+                    <button type="submit" id="myB4" class="btn btn-primary" autocomplete="off">
+                        Connexion
+                    </button>
+
+                </div>
+                <a href="accueil.html">a</a>
+
+            </form>
+
+
+        </div>
+
+
+
+
+
+
+        <div id="new-footer"></div>
         <script>
             $("#new-footer").load("footer.html");
         </script>
-    </div>
+
+
+        <script type="text/javascript">
+            var db = openDatabase('db_local_iset', '1.0', 'db_iset1', 100000);
+            $('#myB4').click(function () {
+                db.transaction(function (tx) {
+
+                    var pw = document.getElementById('pw3').value.toString();
+                    var cin = sessionStorage.userid;
+                    var nom = sessionStorage.userNom;
+                    tx.executeSql('SELECT nom,prenom FROM utilisateur WHERE mdp = ? AND cin = ? AND nom = ?', [pw, cin, nom], function (tx, rs) {
+                        var n = rs.rows.length;
+                        if (pw === "") {
+                            alert("le choix est vide");
+                        }
+                        else {
+                            if (n === 0) {
+                                alert("le mot de passe incorrect");
+                            }
+                            else {
+                               location.href = "accueil.html";
+                                sessionStorage.clear();
+                                var row = rs.rows.item(0);
+                                sessionStorage.userNom = row['nom'];
+                                sessionStorage.userPrenom = row['prenom'];
+                            }
+                        }
+                    });
+                });
+            });
+        </script>
 
     </body>
 </html>

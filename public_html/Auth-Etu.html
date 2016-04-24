@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="js/jquery-1.12.3.min.js" type="text/javascript"></script>
+    </head>
+    <body>
+        <div>
+            <from>
+                <div>
+                    <input type="text" id="ip1" class="form-control" placeholder="Email" aria-describedby="sizing-addon1" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" title="email sous la forme user@exemple.com" />
+                    <input type="button" id="myb" value="Suivant" class="btn btn-primary"/>
+                </div>             
+            </from>
+        </div>
+        <script type="text/javascript">
+            $('#myb').click(function () {
+                var m2 = document.getElementById('ip1').value.toString();
+                alert(m2);
+
+            });
+        </script>
+    </body>
+</html>
